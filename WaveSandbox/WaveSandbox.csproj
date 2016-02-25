@@ -77,8 +77,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\ByteRead.cs" />
     <Compile Include="Extensions\UIServices.cs" />
     <Compile Include="Model\WaveBox.cs" />
+    <Compile Include="Model\WaveStream.cs" />
+    <Compile Include="Model\WaveStruct.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
