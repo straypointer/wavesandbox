@@ -23,5 +23,8 @@ namespace WaveSandbox.Model {
 		public UInt16 blockAlign;		// little
 		public UInt16 bitsPersample;	// little
 
+		public UInt32 subchunk2ID;		// big
+		public UInt32 subchunk2Size;	// little - # of bytes in data
+
 	}
 }

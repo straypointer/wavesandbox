@@ -59,7 +59,21 @@ namespace WaveSandbox.Model {
 			var wave1 = new WaveStream(input1);
 			var wave2 = new WaveStream(input2);
 
+			var minSize = Math.Min(wave1.WaveLength, wave2.WaveLength);
+			
+			WaveStructHeader outputheader;
 
+			if (wave1.WaveLength < wave2.WaveLength) {
+				outputheader = wave1.GetHeader();
+			} else {
+				outputheader = wave2.GetHeader();
+			}
+
+			// output.Write(outputheader);
+
+			for (ulong i = 0; i < minSize; i++) {
+
+			}
 
 			return true;
 		}

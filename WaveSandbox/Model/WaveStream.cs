@@ -18,16 +18,24 @@ namespace WaveSandbox.Model {
 			_reader = input;
 
 			// try to read header
-			//_reader.ReadBytes
 			_header = ByteRead.ByteToType<WaveStructHeader>(input);
 
-			this.FixEndianHeader();
+			this.ValidateHeader();
+
+			this.WaveLength = _header.subchunk2Size;
+			this.SampleSizeBytes = _header.bitsPersample / 8;
 		}
 
-		private void FixEndianHeader() {
-			_header.chunkId = ByteRead.ReverseBytes(_header.chunkId);
-			_header.format = ByteRead.ReverseBytes(_header.format);
-			_header.subchunk1ID = ByteRead.ReverseBytes(_header.subchunk1ID);
+		private bool ValidateHeader() {
+			_header.chunkId = ByteRead.ReverseBytes(_header.chunkId);				// Contains the letters "RIFF" in ASCII form (0x52494646 big-endian form).
+			_header.format = ByteRead.ReverseBytes(_header.format);					// Contains the letters "WAVE" (0x57415645 big-endian form).
+			_header.subchunk1ID = ByteRead.ReverseBytes(_header.subchunk1ID);		// Contains the letters "fmt " (0x666d7420 big-endian form).
+			_header.subchunk2ID = ByteRead.ReverseBytes(_header.subchunk2ID);		// Contains the letters "data" (0x64617461 big-endian form).
+			return true;
+		}
+
+		public WaveStructHeader GetHeader() {
+			return _header;
 		}
 
 		public ulong WaveLength {
@@ -35,8 +43,14 @@ namespace WaveSandbox.Model {
 			private set;
 		}
 
+		public int SampleSizeBytes {
+			get;
+			private set;
+		}
+
 		public byte[] ReadNextPacket() {
-			return null;
+			
+			return _reader.ReadBytes(this.SampleSizeBytes);
 		}
 
 	}
