@@ -21,7 +21,7 @@
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Select File 1" Command="{Binding Path=SelectFile1Command}" />
             <Button Content="Select File 2" Command="{Binding Path=SelectFile2Command}" />
-            <Button Content="Combine Files" Command="{Binding Path=CombineFileCommand}" />
+            <Button Content="Combine Files" Command="{Binding Path=CombineFileCommand}" IsEnabled="{Binding Path=IsCombineAvailable}" />
         </StackPanel>
         
     </Grid>
