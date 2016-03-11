@@ -64,6 +64,7 @@ namespace WaveSandbox.Model {
 			var minSize = Math.Min(wave1.WaveLength, wave2.WaveLength);
 			
 			WaveStructHeader outputheader;
+			BinaryReader shortStream = null;
 
 			if (wave1.SampleSizeBytes != wave2.SampleSizeBytes) {
 				Debug.Assert(false);
@@ -72,21 +73,28 @@ namespace WaveSandbox.Model {
 
 			if (wave1.WaveLength < wave2.WaveLength) {
 				outputheader = wave1.GetHeader();
+				shortStream = input1;
 			} else {
 				outputheader = wave2.GetHeader();
+				shortStream = input2;
 			}
 
 			output.Write(ByteRead.GetBytes<WaveStructHeader>(outputheader));
+			output.Flush();
 
-			for (ulong i = 0; i < minSize; i++) {
+
+			while (shortStream.BaseStream.Position != shortStream.BaseStream.Length) {
 				var wave1packet = wave1.ReadNextPacket();
 				short w1 = this.ConvertPacket(wave1packet);
 
 				var wave2packet = wave2.ReadNextPacket();
 				short w2 = this.ConvertPacket(wave2packet);
 
-				output.Write((w1 + w2));
+				short w3 = (short)(w1 + w2);
+				output.Write(w3);
 			}
+
+			output.Flush();
 
 			return true;
 		}
