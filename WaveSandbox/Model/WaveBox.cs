@@ -82,9 +82,6 @@ namespace WaveSandbox.Model {
 			output.Write(ByteRead.GetBytes<WaveStructHeader>(outputheader));
 			output.Flush();
 
-			int bytesWritten = 0;
-
-
 			while (shortStream.BaseStream.Position != shortStream.BaseStream.Length) {
 				var wave1packet = wave1.ReadNextPacket();
 				short w1 = this.ConvertPacket(wave1packet);
@@ -96,10 +93,7 @@ namespace WaveSandbox.Model {
 					break;
 				}
 
-				short w3 = (short)(w1 + w2);
-				output.Write(w3);
-
-				bytesWritten += 2;
+				output.Write(this.AddStreams(w1, w2));
 			}
 
 			output.Flush();
@@ -107,12 +101,13 @@ namespace WaveSandbox.Model {
 			return true;
 		}
 
+		private short AddStreams(short w1, short w2) {
+			return (short) (w1 / 2 + w2 / 2);
+		}
 
 		private short ConvertPacket(byte[] bytes) {
-			if (bytes.Length == 0) {
-				return -1;
-			} else if (bytes.Length == 1) {
-				return Convert.ToInt16(bytes[0]);
+			if (bytes.Length < sizeof(short)) {
+				return 0;
 			} else {
 				return BitConverter.ToInt16(bytes, 0);
 			}
