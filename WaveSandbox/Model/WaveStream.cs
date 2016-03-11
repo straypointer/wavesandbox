@@ -27,10 +27,10 @@ namespace WaveSandbox.Model {
 		}
 
 		private bool ValidateHeader() {
-			_header.chunkId = ByteRead.ReverseBytes(_header.chunkId);				// Contains the letters "RIFF" in ASCII form (0x52494646 big-endian form).
-			_header.format = ByteRead.ReverseBytes(_header.format);					// Contains the letters "WAVE" (0x57415645 big-endian form).
-			_header.subchunk1ID = ByteRead.ReverseBytes(_header.subchunk1ID);		// Contains the letters "fmt " (0x666d7420 big-endian form).
-			_header.subchunk2ID = ByteRead.ReverseBytes(_header.subchunk2ID);		// Contains the letters "data" (0x64617461 big-endian form).
+			//_header.chunkId = ByteRead.ReverseBytes(_header.chunkId);				// Contains the letters "RIFF" in ASCII form (0x52494646 big-endian form).
+			//_header.format = ByteRead.ReverseBytes(_header.format);					// Contains the letters "WAVE" (0x57415645 big-endian form).
+			//_header.subchunk1ID = ByteRead.ReverseBytes(_header.subchunk1ID);		// Contains the letters "fmt " (0x666d7420 big-endian form).
+			//_header.subchunk2ID = ByteRead.ReverseBytes(_header.subchunk2ID);		// Contains the letters "data" (0x64617461 big-endian form).
 			return true;
 		}
 
