@@ -24,5 +24,16 @@ namespace WaveSandbox.Extensions {
 			return (value & 0x000000FFU) << 24 | (value & 0x0000FF00U) << 8 |
 				(value & 0x00FF0000U) >> 8 | (value & 0xFF000000U) >> 24;
 		}
+
+		public static byte[] GetBytes<T>(T str) {
+			int size = Marshal.SizeOf(str);
+			byte[] arr = new byte[size];
+
+			IntPtr ptr = Marshal.AllocHGlobal(size);
+			Marshal.StructureToPtr(str, ptr, true);
+			Marshal.Copy(ptr, arr, 0, size);
+			Marshal.FreeHGlobal(ptr);
+			return arr;
+		}
 	}
 }

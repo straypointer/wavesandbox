@@ -8,7 +8,7 @@ namespace WaveSandbox.Model {
 
 	// from: http://soundfile.sapp.org/doc/WaveFormat/
 	
-	struct WaveStructHeader {
+	public struct WaveStructHeader {
 
 		public UInt32 chunkId;		// big endian
 		public UInt32 chunkSize;	// little endian

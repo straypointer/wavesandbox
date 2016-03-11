@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WaveSandbox.Extensions;
 
 namespace WaveSandbox.Model {
 	
@@ -63,23 +65,42 @@ namespace WaveSandbox.Model {
 			
 			WaveStructHeader outputheader;
 
+			if (wave1.SampleSizeBytes != wave2.SampleSizeBytes) {
+				Debug.Assert(false);
+				return false;
+			}
+
 			if (wave1.WaveLength < wave2.WaveLength) {
 				outputheader = wave1.GetHeader();
 			} else {
 				outputheader = wave2.GetHeader();
 			}
 
-			// output.Write(outputheader);
+			output.Write(ByteRead.GetBytes<WaveStructHeader>(outputheader));
 
 			for (ulong i = 0; i < minSize; i++) {
+				var wave1packet = wave1.ReadNextPacket();
+				short w1 = this.ConvertPacket(wave1packet);
 
+				var wave2packet = wave2.ReadNextPacket();
+				short w2 = this.ConvertPacket(wave2packet);
+
+				output.Write((w1 + w2));
 			}
 
 			return true;
 		}
 
 
-
+		private short ConvertPacket(byte[] bytes) {
+			if (bytes.Length == 0) {
+				return 0;
+			} else if (bytes.Length == 1) {
+				return Convert.ToInt16(bytes[0]);
+			} else {
+				return BitConverter.ToInt16(bytes, 0);
+			}
+		}
 
 	}
 }
